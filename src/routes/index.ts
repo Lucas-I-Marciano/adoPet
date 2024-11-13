@@ -1,7 +1,8 @@
 import { Router } from "express";
 import { petsRouter } from "./petsRoute.js";
+import express from 'express';
 
-const routes = (app: Router) => {
+const routes = (app: express.Application) => {
   app.use("/pets", petsRouter);
 };
 
