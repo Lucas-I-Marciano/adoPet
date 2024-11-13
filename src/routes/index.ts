@@ -1,8 +1,8 @@
 import { Router } from "express";
 import { petsRouter } from "./petsRoute.js";
 
-const router = Router();
+const routes = (app: Router) => {
+  app.use("/pets", petsRouter);
+};
 
-router.use("/pets", petsRouter);
-
-export default router;
+export default routes;

@@ -4,7 +4,7 @@ import router from "./routes/index.js";
 
 const app = express();
 app.use(express.json());
-app.use(router);
+router(app);
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Welcome to TypeScript course!");

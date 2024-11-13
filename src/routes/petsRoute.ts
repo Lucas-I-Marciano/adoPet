@@ -1,6 +1,8 @@
 import { Router } from "express";
+import { PetController } from "../controllers/PetController.js";
 
 export const petsRouter = Router();
+const petController = new PetController();
 
 function createPet(
   id: Number,
@@ -25,8 +27,5 @@ function generateId() {
 }
 
 petsRouter.post("/", (req, res) => {
-  const pet1 = createPet(generateId(), "Bolt", "cachorro", 3, false);
-  const pet2 = createPet(generateId(), "Mel", "gato", 2, false);
-
-  res.send([pet1, pet2]);
+  petController.createPet(req, res);
 });
