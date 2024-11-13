@@ -26,6 +26,10 @@ function generateId() {
   return id;
 }
 
-petsRouter.post("/", (req, res) => {
+petsRouter
+  .post("/", (req, res) => {
   petController.createPet(req, res);
-});
+})
+  .get('/', (req, res)=>{
+  petController.listPet(req, res)
+})
