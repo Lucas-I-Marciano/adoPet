@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import type { PetType } from "../types/PetType.js";
 import { EnumSpecie } from "../enum/enumSpecie.js";
+import { PetEntity } from "../entity/PetEntity.js";
+import { AppDataSource } from "../config/data-source.js";
 
 let petsList: Array<PetType> = [];
 let id: number = 0;
@@ -11,7 +13,7 @@ function generateId(): number {
 }
 
 export class PetController {
-  createPet(req: Request, res: Response) {
+  async createPet(req: Request, res: Response) {
     const { birthday, name, adopted, specie } = <PetType>req.body;
     if (!Object.values(EnumSpecie).includes(specie)) {
       res.status(400).json({ status: 400, message: "Specie not allowed" });
@@ -39,7 +41,8 @@ export class PetController {
         return;
       }
     }
-    petsList.push(pet);
+    const newPet = new PetEntity(generateId(), name, specie, birthday, adopted);
+    await AppDataSource.manager.save(newPet);
     res.status(200).json(pet);
   }
 
