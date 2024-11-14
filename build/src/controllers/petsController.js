@@ -1,3 +1,4 @@
+import { EnumSpecie } from "../enum/enumSpecie.js";
 let petsList = [];
 let id = 0;
 function generateId() {
@@ -7,6 +8,10 @@ function generateId() {
 export class PetController {
     createPet(req, res) {
         const { age, name, adopted, specie } = req.body;
+        if (!Object.values(EnumSpecie).includes(specie)) {
+            res.status(400).json({ status: 400, message: "Specie not allowed" });
+            return;
+        }
         const pet = { id: generateId(), age, name, adopted, specie };
         petsList.push(pet);
         res.status(200).json(pet);

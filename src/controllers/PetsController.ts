@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import type { PetType } from "../types/PetType.js";
+import { EnumSpecie } from "../enum/enumSpecie.js";
 
 let petsList: Array<PetType> = [];
 let id: number = 0;
@@ -12,6 +13,10 @@ function generateId(): number {
 export class PetController {
   createPet(req: Request, res: Response) {
     const { age, name, adopted, specie } = <PetType>req.body;
+    if (!Object.values(EnumSpecie).includes(specie)) {
+      res.status(400).json({ status: 400, message: "Specie not allowed" });
+      return;
+    }
     const pet = { id: generateId(), age, name, adopted, specie };
     petsList.push(pet);
     res.status(200).json(pet);
@@ -37,6 +42,7 @@ export class PetController {
   updatePet(req: Request, res: Response) {
     const petId = parseInt(req.params["id"]);
     const { id, age, name, adopted, specie } = <PetType>req.body;
+
     const newPet: PetType = { id: petId, age, name, adopted, specie };
 
     const oldPet = petsList.filter((pet) => {
