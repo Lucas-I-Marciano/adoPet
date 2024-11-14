@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { response, Router } from "express";
 import { PetController } from "../controllers/PetsController.js";
 
 export const petsRouter = Router();
@@ -33,6 +33,9 @@ petsRouter
   .get('/', (req, res)=>{
   petController.listPet(req, res)
 })
-.delete('/:id', (req, res)=>{
-  petController.deletePet(req, res)
+  .delete('/:id', (req, res)=>{
+    petController.deletePet(req, res)
 })
+  .put('/:id', (req, res)=>{
+    petController.updatePet(req, res)
+  })
