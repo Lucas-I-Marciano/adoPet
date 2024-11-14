@@ -22,4 +22,7 @@ petsRouter
 })
     .get('/', (req, res) => {
     petController.listPet(req, res);
+})
+    .delete('/:id', (req, res) => {
+    petController.deletePet(req, res);
 });
