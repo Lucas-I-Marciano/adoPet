@@ -4,6 +4,6 @@ export type PetType = {
   id: number;
   name: string;
   specie: EnumSpecie;
-  age: number;
+  birthday: Date;
   adopted: boolean;
 };

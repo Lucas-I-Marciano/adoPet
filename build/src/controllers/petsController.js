@@ -7,12 +7,31 @@ function generateId() {
 }
 export class PetController {
     createPet(req, res) {
-        const { age, name, adopted, specie } = req.body;
+        const { birthday, name, adopted, specie } = req.body;
         if (!Object.values(EnumSpecie).includes(specie)) {
             res.status(400).json({ status: 400, message: "Specie not allowed" });
             return;
         }
-        const pet = { id: generateId(), age, name, adopted, specie };
+        const pet = { id: generateId(), birthday, name, adopted, specie };
+        for (let attribute in pet) {
+            if (!pet[attribute]) {
+                if (attribute == "adopted" &&
+                    pet[attribute] == false) {
+                    continue;
+                }
+                res.status(400).json({
+                    message: "There are missing values",
+                    requiredFields: "birthday, name, adopted, specie",
+                    example: {
+                        birthday: "2011-10-05T14:48:00.000Z",
+                        name: "Mel",
+                        adopted: "true or false",
+                        specie: EnumSpecie,
+                    },
+                });
+                return;
+            }
+        }
         petsList.push(pet);
         res.status(200).json(pet);
     }
@@ -33,8 +52,8 @@ export class PetController {
     }
     updatePet(req, res) {
         const petId = parseInt(req.params["id"]);
-        const { id, age, name, adopted, specie } = req.body;
-        const newPet = { id: petId, age, name, adopted, specie };
+        const { id, birthday, name, adopted, specie } = req.body;
+        const newPet = { id: petId, birthday, name, adopted, specie };
         const oldPet = petsList.filter((pet) => {
             return pet["id"] == petId;
         });
