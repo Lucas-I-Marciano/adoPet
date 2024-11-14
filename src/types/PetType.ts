@@ -1,7 +1,7 @@
 export type PetType = {
-    id: Number;
-    name: String;
-    specie: String;
-    age: Number;
-    adopted: Boolean;
-}    
+  id: number;
+  name: string;
+  specie: string;
+  age: number;
+  adopted: boolean;
+};

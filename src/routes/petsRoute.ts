@@ -1,41 +1,22 @@
-import { response, Router } from "express";
+import { Request, Response, Router } from "express";
 import { PetController } from "../controllers/PetsController.js";
 
 export const petsRouter = Router();
 const petController = new PetController();
 
-function createPet(
-  id: Number,
-  name: String,
-  specie: String,
-  age: Number,
-  adopted: Boolean
-) {
-  return {
-    id,
-    name,
-    specie,
-    age,
-    adopted,
-  };
-}
-
-let id = 0;
-function generateId() {
-  id = id + 1;
-  return id;
-}
-
 petsRouter
-  .post("/", (req, res) => {
-  petController.createPet(req, res);
-})
-  .get('/', (req, res)=>{
-  petController.listPet(req, res)
-})
-  .delete('/:id', (req, res)=>{
-    petController.deletePet(req, res)
-})
-  .put('/:id', (req, res)=>{
-    petController.updatePet(req, res)
+  .post("/", (req: Request, res: Response) => {
+    petController.createPet(req, res);
   })
+  .get("/", (req: Request, res: Response) => {
+    petController.listPet(req, res);
+  })
+  .get("/:id", (req: Request, res: Response) => {
+    petController.getPetId(req, res);
+  })
+  .delete("/:id", (req: Request, res: Response) => {
+    petController.deletePet(req, res);
+  })
+  .put("/:id", (req: Request, res: Response) => {
+    petController.updatePet(req, res);
+  });
