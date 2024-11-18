@@ -1,34 +1,32 @@
 import { Column, Entity, PrimaryColumn } from "typeorm";
-import { EnumSpecie } from "../enum/enumSpecie";
+import { EnumSpecie } from "../enum/EnumSpecie.js";
 
 @Entity()
 export class PetEntity {
-  constructor(
-    id: number,
-    name: string,
-    specie: EnumSpecie,
-    birthday: Date,
-    adopted: Boolean
-  ) {
-    (this.id = id), (this.name = name);
-    this.specie = specie;
-    this.birthday = birthday;
-    this.adopted = adopted;
+  constructor(id : number, name : string, specie : EnumSpecie, birthday : Date, adopted : boolean) {
+    this.id = id
+    this.name = name
+    this.specie = specie
+    this.birthday = birthday
+    this.adopted = adopted
   }
   @PrimaryColumn()
-  id;
+  id : number
 
   @Column({
     length: 100,
   })
-  name;
+  name: string
 
   @Column()
-  specie;
+  specie: EnumSpecie
 
   @Column()
-  birthday;
+  birthday: Date
 
   @Column()
-  adopted;
+  adopted: boolean
 }
+
+
+

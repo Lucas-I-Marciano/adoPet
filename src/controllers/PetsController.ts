@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import type { PetType } from "../types/PetType.js";
-import { EnumSpecie } from "../enum/enumSpecie.js";
+import { EnumSpecie } from "../enum/EnumSpecie.js";
 import { PetEntity } from "../entity/PetEntity.js";
 import { AppDataSource } from "../config/data-source.js";
 
@@ -14,6 +14,10 @@ function generateId(): number {
 
 export class PetController {
   async createPet(req: Request, res: Response) {
+    const newPet1 = new PetEntity(1, "Lucas", EnumSpecie.CAT, new Date('05 October 2024'), false)
+  await AppDataSource.manager.save(newPet1)
+  
+  
     const { birthday, name, adopted, specie } = <PetType>req.body;
     if (!Object.values(EnumSpecie).includes(specie)) {
       res.status(400).json({ status: 400, message: "Specie not allowed" });

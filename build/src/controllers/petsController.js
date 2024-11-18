@@ -1,4 +1,6 @@
-import { EnumSpecie } from "../enum/enumSpecie.js";
+import { EnumSpecie } from "../enum/EnumSpecie.js";
+import { PetEntity } from "../entity/PetEntity.js";
+import { AppDataSource } from "../config/data-source.js";
 let petsList = [];
 let id = 0;
 function generateId() {
@@ -6,7 +8,9 @@ function generateId() {
     return id;
 }
 export class PetController {
-    createPet(req, res) {
+    async createPet(req, res) {
+        const newPet1 = new PetEntity(1, "Lucas", EnumSpecie.CAT, new Date('05 October 2024'), false);
+        await AppDataSource.manager.save(newPet1);
         const { birthday, name, adopted, specie } = req.body;
         if (!Object.values(EnumSpecie).includes(specie)) {
             res.status(400).json({ status: 400, message: "Specie not allowed" });
@@ -32,7 +36,8 @@ export class PetController {
                 return;
             }
         }
-        petsList.push(pet);
+        const newPet = new PetEntity(generateId(), name, specie, birthday, adopted);
+        await AppDataSource.manager.save(newPet);
         res.status(200).json(pet);
     }
     listPet(req, res) {

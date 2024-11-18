@@ -8,10 +8,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 import { Column, Entity, PrimaryColumn } from "typeorm";
-import { EnumSpecie } from "../enum/enumSpecie";
+import { EnumSpecie } from "../enum/EnumSpecie.js";
 let PetEntity = class PetEntity {
     constructor(id, name, specie, birthday, adopted) {
-        (this.id = id), (this.name = name);
+        this.id = id;
+        this.name = name;
         this.specie = specie;
         this.birthday = birthday;
         this.adopted = adopted;
@@ -19,29 +20,28 @@ let PetEntity = class PetEntity {
 };
 __decorate([
     PrimaryColumn(),
-    __metadata("design:type", Object)
+    __metadata("design:type", Number)
 ], PetEntity.prototype, "id", void 0);
 __decorate([
     Column({
         length: 100,
     }),
-    __metadata("design:type", Object)
+    __metadata("design:type", String)
 ], PetEntity.prototype, "name", void 0);
 __decorate([
     Column(),
-    __metadata("design:type", Object)
+    __metadata("design:type", String)
 ], PetEntity.prototype, "specie", void 0);
 __decorate([
     Column(),
-    __metadata("design:type", Object)
+    __metadata("design:type", Date)
 ], PetEntity.prototype, "birthday", void 0);
 __decorate([
     Column(),
-    __metadata("design:type", Object)
+    __metadata("design:type", Boolean)
 ], PetEntity.prototype, "adopted", void 0);
 PetEntity = __decorate([
     Entity(),
-    __metadata("design:paramtypes", [Number, String, String, Date,
-        Boolean])
+    __metadata("design:paramtypes", [Number, String, String, Date, Boolean])
 ], PetEntity);
 export { PetEntity };
