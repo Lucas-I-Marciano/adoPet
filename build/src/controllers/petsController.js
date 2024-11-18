@@ -100,19 +100,19 @@ export class PetController {
             return;
         }
     }
-    deletePet(req, res) {
-        const { id } = req.params;
-        const pet = petsList.find((pet) => {
-            return pet["id"] == parseInt(id);
-        });
-        const indexToFind = pet == undefined ? {} : pet;
-        const index = petsList.indexOf(indexToFind);
-        if (index == -1) {
-            return res.send(404).json({ status: 404, message: "Pet not founded" });
+    async deletePet(req, res) {
+        try {
+            const id = parseInt(req.params["id"]);
+            const pet = await petRepository.findOneBy({ id });
+            const treatedPet = pet ? pet : {};
+            await petRepository.remove(treatedPet);
+            res
+                .status(200)
+                .json({ status: 200, message: "Pet Deleted!", petDeleted: pet });
         }
-        petsList.splice(index, 1);
-        res
-            .status(200)
-            .json({ status: 200, message: "Pet Deleted!", petDeleted: pet });
+        catch (error) {
+            res.status(406).json({ status: 406, message: "ID must be a integer" });
+            return;
+        }
     }
 }

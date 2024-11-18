@@ -121,21 +121,21 @@ export class PetController {
 
   }
 
-  deletePet(req: Request, res: Response) {
-    const { id } = req.params;
+  async deletePet(req: Request, res: Response) {
+    try {
+      const id = parseInt(req.params["id"]);
+      const pet = await petRepository.findOneBy({id})
+      const treatedPet = pet ? pet : <PetType>{}
 
-    const pet = petsList.find((pet) => {
-      return pet["id"] == parseInt(id);
-    });
-    const indexToFind = pet == undefined ? <PetType>{} : pet;
-    const index = petsList.indexOf(indexToFind);
-    if (index == -1) {
-      return res.send(404).json({ status: 404, message: "Pet not founded" });
+      await petRepository.remove(treatedPet)
+
+      res
+        .status(200)
+        .json({ status: 200, message: "Pet Deleted!", petDeleted: pet });
+    } catch (error) {
+      res.status(406).json({ status: 406, message: "ID must be a integer"})
+      return
     }
 
-    petsList.splice(index, 1);
-    res
-      .status(200)
-      .json({ status: 200, message: "Pet Deleted!", petDeleted: pet });
   }
 }
