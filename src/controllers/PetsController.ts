@@ -49,8 +49,9 @@ export class PetController {
   res.status(200).json(newPet);
   }
 
-  listPet(req: Request, res: Response) {
-    res.status(200).json(petsList);
+  async listPet(req: Request, res: Response) {
+    const savedPets = await AppDataSource.manager.find(PetEntity)
+    res.status(200).json({status : 200, message : "Success!", pets : savedPets});
   }
 
   getPetId(req: Request, res: Response) {
