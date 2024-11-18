@@ -1,12 +1,6 @@
 import { EnumSpecie } from "../enum/EnumSpecie.js";
-import { PetEntity } from "../entity/PetEntity.js";
+import { PetEntity } from "../entities/PetEntity.js";
 import { petRepository } from "../repositories/PetRepository.js";
-let petsList = [];
-let id = 0;
-function generateId() {
-    id = id + 1;
-    return id;
-}
 export class PetController {
     async createPet(req, res) {
         const { birthday, name, adopted, specie } = req.body;
