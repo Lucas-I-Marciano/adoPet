@@ -2,16 +2,7 @@ import { Request, Response } from "express";
 import type { PetType } from "../types/PetType.js";
 import { EnumSpecie } from "../enum/EnumSpecie.js";
 import { PetEntity } from "../entity/PetEntity.js";
-import { AppDataSource } from "../config/data-source.js";
 import { petRepository } from "../repositories/PetRepository.js";
-
-let petsList: Array<PetType> = [];
-let id: number = 0;
-
-function generateId(): number {
-  id = id + 1;
-  return id;
-}
 
 export class PetController {
   async createPet(req: Request, res: Response) {
