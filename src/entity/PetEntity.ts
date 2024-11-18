@@ -1,17 +1,16 @@
-import { Column, Entity, PrimaryColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 import { EnumSpecie } from "../enum/EnumSpecie.js";
 
 @Entity()
 export class PetEntity {
-  constructor(id : number, name : string, specie : EnumSpecie, birthday : Date, adopted : boolean) {
-    this.id = id
+  constructor(name : string, specie : EnumSpecie, birthday : Date, adopted : boolean) {
     this.name = name
     this.specie = specie
     this.birthday = birthday
     this.adopted = adopted
   }
-  @PrimaryColumn()
-  id : number
+  @PrimaryGeneratedColumn()
+  id!: number;
 
   @Column({
     length: 100,

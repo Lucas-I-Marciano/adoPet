@@ -14,16 +14,14 @@ function generateId(): number {
 
 export class PetController {
   async createPet(req: Request, res: Response) {
-    const newPet1 = new PetEntity(1, "Lucas", EnumSpecie.CAT, new Date('05 October 2024'), false)
-  await AppDataSource.manager.save(newPet1)
-  
-  
+    
+    
     const { birthday, name, adopted, specie } = <PetType>req.body;
     if (!Object.values(EnumSpecie).includes(specie)) {
       res.status(400).json({ status: 400, message: "Specie not allowed" });
       return;
     }
-    const pet = { id: generateId(), birthday, name, adopted, specie };
+    const pet = { id: 1, birthday, name, adopted, specie };
     for (let attribute in pet) {
       if (!pet[attribute as keyof PetType]) {
         if (
@@ -45,9 +43,10 @@ export class PetController {
         return;
       }
     }
-    const newPet = new PetEntity(generateId(), name, specie, birthday, adopted);
-    await AppDataSource.manager.save(newPet);
-    res.status(200).json(pet);
+  
+  const newPet = new PetEntity(name, specie, birthday, adopted)
+  await AppDataSource.manager.save(newPet)
+  res.status(200).json(newPet);
   }
 
   listPet(req: Request, res: Response) {
