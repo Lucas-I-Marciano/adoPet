@@ -3,6 +3,7 @@ import type { PetType } from "../types/PetType.js";
 import { EnumSpecie } from "../enum/EnumSpecie.js";
 import { PetEntity } from "../entity/PetEntity.js";
 import { AppDataSource } from "../config/data-source.js";
+import { petRepository } from "../repositories/PetRepository.js";
 
 let petsList: Array<PetType> = [];
 let id: number = 0;
@@ -45,12 +46,12 @@ export class PetController {
     }
   
   const newPet = new PetEntity(name, specie, birthday, adopted)
-  await AppDataSource.manager.save(newPet)
+  await petRepository.save(newPet)
   res.status(200).json(newPet);
   }
 
   async listPet(req: Request, res: Response) {
-    const savedPets = await AppDataSource.manager.find(PetEntity)
+    const savedPets = await petRepository.find()
     res.status(200).json({status : 200, message : "Success!", pets : savedPets});
   }
 
