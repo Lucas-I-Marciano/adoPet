@@ -78,9 +78,10 @@ export class PetController {
       const petId = parseInt(req.params["id"]);
       const { id = petId, birthday, name, adopted, specie } = <PetType>req.body;
       const newPet: PetType = { id: petId, birthday, name, adopted, specie };
-      const oldPet = await petRepository.findOneBy({
+      let oldPet = await petRepository.findOneBy({
         id : petId
       })
+      const toShowOldPet = oldPet
 
       if (!oldPet) {
         return res.status(404).json({ status: 404, message: "Pet not founded" });
@@ -107,12 +108,14 @@ export class PetController {
           return;
         }
 
-          res.status(200).json({
-            status: 200,
-            message: "Pet updated!",
-            oldPet: oldPet,
-            newPet: newPet,
-          });
+      oldPet = newPet
+      await petRepository.save(oldPet)
+      res.status(200).json({
+        status: 200,
+        message: "Pet updated!",
+        oldPet: toShowOldPet,
+        newPet: newPet,
+      });
     } catch (error) {
       res.status(406).json({ status: 406, message: "ID must be a integer"})
       return
