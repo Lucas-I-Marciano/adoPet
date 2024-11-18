@@ -42,17 +42,23 @@ export class PetController {
         const savedPets = await petRepository.find();
         res.status(200).json({ status: 200, message: "Success!", pets: savedPets });
     }
-    getPetId(req, res) {
-        const petId = req.params["id"];
-        const pet = petsList.find((pet) => {
-            return pet["id"] == parseInt(petId);
-        });
-        if (!pet) {
-            res.status(404).json({ status: 404, message: "Pet not founded" });
+    async getPetId(req, res) {
+        try {
+            const petId = parseInt(req.params["id"]);
+            const pet = await petRepository.findOneBy({
+                id: petId
+            });
+            if (!pet) {
+                res.status(404).json({ status: 404, message: "Pet not founded" });
+                return;
+            }
+            res.status(200).json({ status: 200, pet: pet });
+            return pet;
+        }
+        catch (erro) {
+            res.status(406).json({ status: 406, message: "ID must be a integer" });
             return;
         }
-        res.status(200).json({ status: 200, pet: pet });
-        return pet;
     }
     updatePet(req, res) {
         const petId = parseInt(req.params["id"]);
