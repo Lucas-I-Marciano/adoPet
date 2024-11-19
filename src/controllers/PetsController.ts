@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import type { PetType } from "../types/PetType.js";
 import { EnumSpecie } from "../enum/EnumSpecie.js";
 import { PetEntity } from "../entities/PetEntity.js";
-import { PetRepository, petRepository } from "../repositories/PetRepository.js";
+import { PetRepository } from "../repositories/PetRepository.js";
 
 export class PetController {
   private petRepRepository = new PetRepository();
