@@ -1,7 +1,10 @@
 import { EnumSpecie } from "../enum/EnumSpecie.js";
 import { PetEntity } from "../entities/PetEntity.js";
-import { petRepository } from "../repositories/PetRepository.js";
+import { PetRepository } from "../repositories/PetRepository.js";
 export class PetController {
+    constructor() {
+        this.petRepRepository = new PetRepository();
+    }
     async createPet(req, res) {
         const { birthday, name, adopted, specie } = req.body;
         if (!Object.values(EnumSpecie).includes(specie)) {
@@ -29,19 +32,17 @@ export class PetController {
             }
         }
         const newPet = new PetEntity(name, specie, birthday, adopted);
-        await petRepository.save(newPet);
-        res.status(200).json(newPet);
+        const createPet = await this.petRepRepository.createPet(newPet);
+        res.status(200).json(Object.assign(Object.assign({}, newPet), { id: createPet.id }));
     }
     async listPet(req, res) {
-        const savedPets = await petRepository.find();
+        const savedPets = await this.petRepRepository.listAllPets();
         res.status(200).json({ status: 200, message: "Success!", pets: savedPets });
     }
     async getPetId(req, res) {
         try {
             const petId = parseInt(req.params["id"]);
-            const pet = await petRepository.findOneBy({
-                id: petId
-            });
+            const pet = await this.petRepRepository.listPetById(petId);
             if (!pet) {
                 res.status(404).json({ status: 404, message: "Pet not founded" });
                 return;
@@ -59,12 +60,11 @@ export class PetController {
             const petId = parseInt(req.params["id"]);
             const { id = petId, birthday, name, adopted, specie } = req.body;
             const newPet = { id: petId, birthday, name, adopted, specie };
-            let oldPet = await petRepository.findOneBy({
-                id: petId
-            });
-            const toShowOldPet = oldPet;
+            const oldPet = await this.petRepRepository.listPetById(petId);
             if (!oldPet) {
-                return res.status(404).json({ status: 404, message: "Pet not founded" });
+                return res
+                    .status(404)
+                    .json({ status: 404, message: "Pet not founded" });
             }
             const nullValuesList = [];
             for (let attribute in oldPet) {
@@ -83,12 +83,12 @@ export class PetController {
                 });
                 return;
             }
-            oldPet = newPet;
-            await petRepository.save(oldPet);
+            await this.petRepRepository.updatePetById(petId, newPet);
+            // await this.petRepRepository.createPet(oldPet);
             res.status(200).json({
                 status: 200,
                 message: "Pet updated!",
-                oldPet: toShowOldPet,
+                oldPet: oldPet,
                 newPet: newPet,
             });
         }
@@ -100,12 +100,8 @@ export class PetController {
     async deletePet(req, res) {
         try {
             const id = parseInt(req.params["id"]);
-            const pet = await petRepository.findOneBy({ id });
-            const treatedPet = pet ? pet : {};
-            await petRepository.remove(treatedPet);
-            res
-                .status(200)
-                .json({ status: 200, message: "Pet Deleted!", petDeleted: pet });
+            this.petRepRepository.deletePetById(id);
+            res.status(200).json({ status: 200, message: "Pet Deleted!" });
         }
         catch (error) {
             res.status(406).json({ status: 406, message: "ID must be a integer" });
