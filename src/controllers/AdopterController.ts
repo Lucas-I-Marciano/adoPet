@@ -40,4 +40,11 @@ export class AdopterController {
       message: `Adopter's address Updated: ${newAddress.city} - ${newAddress.state}`,
     });
   }
+
+  async listAdopters(req: Request, res: Response) {
+    return res.status(200).json({
+      message: "Successful!",
+      data: await this.adopterRepository.listAdopters(),
+    });
+  }
 }
