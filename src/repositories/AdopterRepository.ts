@@ -16,4 +16,7 @@ export class AdopterRepository {
   listAdopters(): Promise<AdopterEntity[]> {
     return adopterRepository.find();
   }
+  deleteAdopter(adopter: AdopterEntity): void {
+    adopterRepository.remove(adopter);
+  }
 }
