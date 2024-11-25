@@ -1,13 +1,19 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { EnumSpecie } from "../enum/EnumSpecie.js";
+import { AdopterEntity } from "./AdopterEntity.js";
 
 @Entity()
 export class PetEntity {
-  constructor(name : string, specie : EnumSpecie, birthday : Date, adopted : boolean) {
-    this.name = name
-    this.specie = specie
-    this.birthday = birthday
-    this.adopted = adopted
+  constructor(
+    name: string,
+    specie: EnumSpecie,
+    birthday: Date,
+    adopted: boolean
+  ) {
+    this.name = name;
+    this.specie = specie;
+    this.birthday = birthday;
+    this.adopted = adopted;
   }
   @PrimaryGeneratedColumn()
   id!: number;
@@ -15,17 +21,17 @@ export class PetEntity {
   @Column({
     length: 100,
   })
-  name: string
+  name: string;
 
   @Column()
-  specie: EnumSpecie
+  specie: EnumSpecie;
 
   @Column()
-  birthday: Date
+  birthday: Date;
 
   @Column()
-  adopted: boolean
+  adopted: boolean;
+
+  @ManyToOne(() => AdopterEntity, (adopter) => adopter.pets)
+  adopter!: AdopterEntity;
 }
-
-
-
