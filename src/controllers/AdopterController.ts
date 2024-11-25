@@ -5,8 +5,18 @@ import { AdopterRepository } from "../repositories/AdopterRepository.js";
 export class AdopterController {
   private adopterRepository = new AdopterRepository();
 
-  createAdopter(req: Request, res: Response) {
-    const adopter = req.body;
-    return res.status(200).json({ message: "OK", adopter });
+  async createAdopter(req: Request, res: Response) {
+    const { address, cellphone, name, password, photo } = <AdopterEntity>(
+      req.body
+    );
+    const newAdopter = new AdopterEntity(
+      name,
+      password,
+      cellphone,
+      photo!,
+      address!
+    );
+    this.adopterRepository.createAdopter(newAdopter);
+    return res.status(200).json({ message: "OK", newAdopter });
   }
 }
