@@ -3,7 +3,6 @@ import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 @Entity()
 export class AdopterEntity {
   constructor(
-    id: number,
     name: string,
     password: string,
     cellphone: string,
@@ -24,8 +23,8 @@ export class AdopterEntity {
   password: string;
   @Column()
   cellphone: string;
-  @Column()
-  photo: string;
-  @Column()
-  address: string;
+  @Column({ nullable: true })
+  photo?: string;
+  @Column({ nullable: true })
+  address?: string;
 }
