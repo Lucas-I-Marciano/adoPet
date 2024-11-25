@@ -126,4 +126,13 @@ export class PetController {
     this.petRepRepository.adoPet(parseInt(petId), parseInt(adopterId));
     return res.status(200).json({ status: 200, message: "Pet adopted!" });
   }
+
+  async filterPet(req: Request, res: Response) {
+    const { field, value } = req.query;
+    const pets = await this.petRepRepository.filterPet(
+      field as keyof PetEntity,
+      value as string
+    );
+    return res.status(200).json({ status: 200, data: pets });
+  }
 }
