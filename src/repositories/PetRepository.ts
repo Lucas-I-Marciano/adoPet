@@ -47,4 +47,8 @@ export class PetRepository {
     pet.adopted = true;
     await petRepository.save(pet);
   }
+
+  async filterPet<T extends keyof PetEntity>(field: T, value: PetEntity[T]) {
+    return await petRepository.find({ where: { [field]: value } });
+  }
 }
