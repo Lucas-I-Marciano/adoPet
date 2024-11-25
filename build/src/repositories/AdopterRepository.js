@@ -5,4 +5,15 @@ export class AdopterRepository {
     createAdopter(adopter) {
         adopterRepository.save(adopter);
     }
+    findAdopterById(id) {
+        return adopterRepository.findOneBy({
+            id: id,
+        });
+    }
+    listAdopters() {
+        return adopterRepository.find();
+    }
+    deleteAdopter(adopter) {
+        adopterRepository.remove(adopter);
+    }
 }

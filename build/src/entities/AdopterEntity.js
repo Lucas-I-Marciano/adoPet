@@ -7,9 +7,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn, } from "typeorm";
+import { AddressEntity } from "./AddressEntity.js";
+import { PetEntity } from "./PetEntity.js";
 let AdopterEntity = class AdopterEntity {
-    constructor(id, name, password, cellphone, photo, address) {
+    constructor(name, password, cellphone, photo, address) {
         this.name = name;
         this.password = password;
         this.cellphone = cellphone;
@@ -34,15 +36,24 @@ __decorate([
     __metadata("design:type", String)
 ], AdopterEntity.prototype, "cellphone", void 0);
 __decorate([
-    Column(),
+    Column({ nullable: true }),
     __metadata("design:type", String)
 ], AdopterEntity.prototype, "photo", void 0);
 __decorate([
-    Column(),
-    __metadata("design:type", String)
+    OneToOne(() => AddressEntity, (address) => address.id, {
+        nullable: true,
+        cascade: true,
+        eager: true,
+    }),
+    JoinColumn(),
+    __metadata("design:type", AddressEntity)
 ], AdopterEntity.prototype, "address", void 0);
+__decorate([
+    OneToMany(() => PetEntity, (pet) => pet.adopter, { eager: true }),
+    __metadata("design:type", Array)
+], AdopterEntity.prototype, "pets", void 0);
 AdopterEntity = __decorate([
     Entity(),
-    __metadata("design:paramtypes", [Number, String, String, String, String, String])
+    __metadata("design:paramtypes", [String, String, String, String, AddressEntity])
 ], AdopterEntity);
 export { AdopterEntity };

@@ -7,8 +7,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { EnumSpecie } from "../enum/EnumSpecie.js";
+import { AdopterEntity } from "./AdopterEntity.js";
 let PetEntity = class PetEntity {
     constructor(name, specie, birthday, adopted) {
         this.name = name;
@@ -39,6 +40,10 @@ __decorate([
     Column(),
     __metadata("design:type", Boolean)
 ], PetEntity.prototype, "adopted", void 0);
+__decorate([
+    ManyToOne(() => AdopterEntity, (adopter) => adopter.pets),
+    __metadata("design:type", AdopterEntity)
+], PetEntity.prototype, "adopter", void 0);
 PetEntity = __decorate([
     Entity(),
     __metadata("design:paramtypes", [String, String, Date, Boolean])

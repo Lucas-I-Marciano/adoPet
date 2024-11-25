@@ -9,6 +9,9 @@ petsRouter
     .get("/", (req, res) => {
     petController.listPet(req, res);
 })
+    .get("/filter", (req, res) => {
+    petController.filterPet(req, res);
+})
     .get("/:id", (req, res) => {
     petController.getPetId(req, res);
 })
@@ -17,4 +20,8 @@ petsRouter
 })
     .put("/:id", (req, res) => {
     petController.updatePet(req, res);
+})
+    .put("/:petId/adoPet/:adopterId", (req, res) => {
+    console.log("Entrei");
+    petController.adoPet(req, res);
 });
