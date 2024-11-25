@@ -6,8 +6,8 @@ export class AdopterEntity {
     name: string,
     password: string,
     cellphone: string,
-    photo: string,
-    address: string
+    photo?: string,
+    address?: string
   ) {
     this.name = name;
     this.password = password;

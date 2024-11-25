@@ -13,8 +13,8 @@ export class AdopterController {
       name,
       password,
       cellphone,
-      photo!,
-      address!
+      photo,
+      address
     );
     this.adopterRepository.createAdopter(newAdopter);
     return res.status(200).json({ message: "OK", newAdopter });
