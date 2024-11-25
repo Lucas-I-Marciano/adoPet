@@ -13,8 +13,7 @@ adopterRouter
   })
   .patch("/address/:adopterId", (req: Request, res: Response) => {
     adopterController.updateAddress(req, res);
-    // const addres1 = new AddressEntity("Sao Jose dos Campos", "Sao Paulo");
-    // const adopted1 = new AdopterEntity("Lucas", "asd", "123123");
-    // adopted1.address = addres1;
-    // AppDataSource.manager.save(adopted1);
+  })
+  .get("/", (req: Request, res: Response) => {
+    adopterController.listAdopters(req, res);
   });
