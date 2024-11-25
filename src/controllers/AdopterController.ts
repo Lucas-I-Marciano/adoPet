@@ -47,4 +47,22 @@ export class AdopterController {
       data: await this.adopterRepository.listAdopters(),
     });
   }
+
+  async deleteAdopter(req: Request, res: Response) {
+    const { adopterId } = req.params;
+    const adopter = await this.adopterRepository.findAdopterById(
+      parseInt(adopterId)
+    );
+    if (!adopter) {
+      return res
+        .status(404)
+        .json({ status: 404, message: "Adopter not found!" });
+    }
+    this.adopterRepository.deleteAdopter(adopter);
+    return res.status(200).json({
+      status: 200,
+      message: "Adopter successfully deleted!",
+      data: adopter,
+    });
+  }
 }
