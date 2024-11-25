@@ -16,4 +16,7 @@ adopterRouter
   })
   .get("/", (req: Request, res: Response) => {
     adopterController.listAdopters(req, res);
+  })
+  .delete("/:adopterId", (req: Request, res: Response) => {
+    adopterController.deleteAdopter(req, res);
   });
