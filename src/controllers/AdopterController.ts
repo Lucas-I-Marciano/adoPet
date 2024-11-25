@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { AdopterEntity } from "../entities/AdopterEntity.js";
 import { AdopterRepository } from "../repositories/AdopterRepository.js";
+import { AddressEntity } from "../entities/AddressEntity.js";
 
 export class AdopterController {
   private adopterRepository = new AdopterRepository();
@@ -18,5 +19,25 @@ export class AdopterController {
     );
     this.adopterRepository.createAdopter(newAdopter);
     return res.status(200).json({ message: "OK", newAdopter });
+  }
+
+  async updateAddress(req: Request, res: Response) {
+    const { city, state } = <AddressEntity>req.body;
+    const { adopterId } = req.params;
+    const newAddress = new AddressEntity(city, state);
+    const adopter = await this.adopterRepository.findAdopterById(
+      parseInt(adopterId)
+    );
+    if (!adopter) {
+      return res
+        .status(404)
+        .json({ status: 404, message: "Adopter not found!" });
+    }
+    adopter.address = newAddress;
+    this.adopterRepository.createAdopter(adopter);
+    return res.status(200).json({
+      status: 200,
+      message: `Adopter's address Updated: ${newAddress.city} - ${newAddress.state}`,
+    });
   }
 }
