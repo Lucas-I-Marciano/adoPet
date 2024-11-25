@@ -19,4 +19,7 @@ petsRouter
   })
   .put("/:id", (req: Request, res: Response) => {
     petController.updatePet(req, res);
+  })
+  .put("/:petId/adoPet/:adopterId", (req: Request, res: Response) => {
+    petController.adoPet(req, res);
   });

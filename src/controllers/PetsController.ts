@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import type { PetType } from "../types/PetType.js";
 import { EnumSpecie } from "../enum/EnumSpecie.js";
 import { PetEntity } from "../entities/PetEntity.js";
-import { PetRepository, petRepository } from "../repositories/PetRepository.js";
+import { PetRepository } from "../repositories/PetRepository.js";
 
 export class PetController {
   private petRepRepository = new PetRepository();
@@ -65,7 +65,7 @@ export class PetController {
     try {
       const petId = parseInt(req.params["id"]);
       const { id = petId, birthday, name, adopted, specie } = <PetType>req.body;
-      const newPet: PetType = { id: petId, birthday, name, adopted, specie };
+      const newPet: PetEntity = new PetEntity(name, specie, birthday, adopted);
       const oldPet = await this.petRepRepository.listPetById(petId);
 
       if (!oldPet) {
@@ -119,5 +119,11 @@ export class PetController {
       res.status(406).json({ status: 406, message: "ID must be a integer" });
       return;
     }
+  }
+
+  async adoPet(req: Request, res: Response) {
+    const { petId, adopterId } = req.params;
+    this.petRepRepository.adoPet(parseInt(petId), parseInt(adopterId));
+    return res.status(200).json({ status: 200, message: "Pet adopted!" });
   }
 }
