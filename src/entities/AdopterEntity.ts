@@ -34,7 +34,7 @@ export class AdopterEntity {
   cellphone: string;
   @Column({ nullable: true })
   photo?: string;
-  @OneToOne((type) => AddressEntity, (address) => address.id, {
+  @OneToOne(() => AddressEntity, (address) => address.id, {
     nullable: true,
     cascade: true,
     eager: true,
@@ -42,6 +42,6 @@ export class AdopterEntity {
   @JoinColumn()
   address?: AddressEntity;
 
-  @OneToMany(() => PetEntity, (pet) => pet.adopter)
+  @OneToMany(() => PetEntity, (pet) => pet.adopter, { eager: true })
   pets!: PetEntity[];
 }
